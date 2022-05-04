@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import static com.shakespeares.monkeys.app.util.Validation.validateCredentials;
 
 @Controller
 @RequestMapping("/registration")
@@ -31,7 +32,21 @@ public class RegistrationController {
 
 	@PostMapping
 	public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto) {
-		userService.save(registrationDto);
-		return "redirect:/registration?success";
+		String resultE= validateCredentials(registrationDto.getUsername());
+		String resultP=validateCredentials(registrationDto.getPassword());
+		if (resultE.equals("valid") && resultP.equals("valid")){
+			userService.save(registrationDto);
+			System.out.println("username:" + resultE + "\n password:" + resultP);
+			return "redirect:/registration?success";
+		}
+		if(resultE.equals("invalid")){
+			System.out.println("username:" + resultE);
+			return "redirect:/registration?usernameError";
+
+		}
+		else{
+			System.out.println("password:" + resultP);
+			return "redirect:/registration?passwordError";
+		}
 	}
 }
