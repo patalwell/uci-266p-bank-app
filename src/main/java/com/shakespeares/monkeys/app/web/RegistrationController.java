@@ -19,6 +19,11 @@ public class RegistrationController {
 		this.userService = userService;
 	}
 
+	@GetMapping("/login")
+	public String login() {
+		return "login";
+	}
+
 	@ModelAttribute("user")
 	public UserRegistrationDto userRegistrationDto() {
 		return new UserRegistrationDto();

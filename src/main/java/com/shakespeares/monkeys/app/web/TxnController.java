@@ -8,6 +8,8 @@ import com.shakespeares.monkeys.app.model.Status;
 import com.shakespeares.monkeys.app.model.TransactionInfo;
 import com.shakespeares.monkeys.app.model.TxnType;
 import com.shakespeares.monkeys.app.service.TransactionService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,6 +30,10 @@ public class TxnController {
   @RequestMapping(value = "/", method = RequestMethod.GET)
   public String getTxns(Model model) {
     List<TransactionInfo> txns = txnService.getTxns();
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    model.addAttribute("userName", auth.getName());
+    model.addAttribute("accountId", auth.hashCode());
+    model.addAttribute("userBalance",balance);
     model.addAttribute("txns", txns);
     model.addAttribute("txnInfo", new TransactionInfo());
     return "transactions";
@@ -37,7 +43,8 @@ public class TxnController {
   public String createTxn(Model model,
                            @ModelAttribute TransactionInfo txnInfo) {
 
-    if (txnInfo.getTxnType() == TxnType.DEPOSIT && txnInfo.getAmount().compareTo(new BigDecimal("0.0")) > 0 ){
+
+    if (txnInfo.getTxnType() == TxnType.DEPOSIT && txnInfo.getAmount().compareTo(new BigDecimal("0.0")) >= 0 ){
       balance = balance.add(txnInfo.getAmount());
       txnInfo.setBalance(balance);
       txnInfo.setStatus(Status.APPROVED);
@@ -49,10 +56,11 @@ public class TxnController {
       txnInfo.setStatus(Status.APPROVED);
     }
 
-    else if (txnInfo.getTxnType() == TxnType.WITHDRAW && txnInfo.getAmount().compareTo(balance) < 0){
+    else if (txnInfo.getTxnType() == TxnType.WITHDRAW && txnInfo.getAmount().compareTo(balance) == 1 ){
       txnInfo.setBalance(balance);
       txnInfo.setStatus(Status.DENIED);
     }
+
 
     TransactionInfo txn = txnService.createTxn(txnInfo);
     return "redirect:/transactions/";
