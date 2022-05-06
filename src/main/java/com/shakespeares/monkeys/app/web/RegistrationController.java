@@ -39,8 +39,10 @@ public class RegistrationController {
 			return "redirect:/registration?success";
 		}
 		else if(isUsernameValid.equals(false)){
-			return "redirect:/registration?invalidCredentials";
-
+			return "redirect:/registration?invalidUsername";
+		}
+		else if(isPasswordValid.equals(false)) {
+			return "redirect:/registration?invalidPassword";
 		}
 		else {
 			return "redirect:/registration?registrationFailed";
