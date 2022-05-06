@@ -28,11 +28,11 @@
 					<div class="alert alert-info">You've successfully registered
 						for our bank app!</div>
 				</div>
-				<div th:if="${param.usernameError}">
-					<div class="alert alert-danger">Invalid input. Username is not valid.</div>
+				<div th:if="${param.invalidCredentials}">
+					<div class="alert alert-danger">Invalid input. Username or Password is not valid.</div>
 				</div>
-				<div th:if="${param.passwordError}">
-					<div class="alert alert-danger">Invalid input. Password is not valid.</div>
+				<div th:if="${param.registrationFailed}">
+					<div class="alert alert-danger">Registration Failed. Contact Customer Service.</div>
 				</div>
 
 

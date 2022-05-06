@@ -32,21 +32,18 @@ public class RegistrationController {
 
 	@PostMapping
 	public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto) {
-		Boolean resultE= validateCredentials(registrationDto.getUsername());
-		Boolean resultP=validateCredentials(registrationDto.getPassword());
-		if (resultE && resultP){
+		Boolean isUsernameValid= validateCredentials(registrationDto.getUsername());
+		Boolean isPasswordValid=validateCredentials(registrationDto.getPassword());
+		if (isUsernameValid && isPasswordValid){
 			userService.save(registrationDto);
-			System.out.println("username:" + resultE + "\n password:" + resultP);
 			return "redirect:/registration?success";
 		}
-		if(resultE.equals(false)){
-			System.out.println("username:" + resultE);
-			return "redirect:/registration?usernameError";
+		else if(isUsernameValid.equals(false)){
+			return "redirect:/registration?invalidCredentials";
 
 		}
-		else{
-			System.out.println("password:" + resultP);
-			return "redirect:/registration?passwordError";
+		else {
+			return "redirect:/registration?registrationFailed";
 		}
 	}
 }
