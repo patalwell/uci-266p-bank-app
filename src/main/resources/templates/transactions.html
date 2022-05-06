@@ -7,7 +7,7 @@
       content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
       name="viewport">
   <meta content="ie=edge" http-equiv="X-UA-Compatible">
-  <title>Thymeleaf Form handling Demo</title>
+  <title>My Account - Shakespeare's Bank<</title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css"
         rel="stylesheet">
 </head>
@@ -45,9 +45,12 @@
           </option>
         </select>
       </div>
-      <input class="btn btn-primary" type="submit" value="Create Transaction">
+      <input id="createTransaction" class="btn btn-primary" type="submit" value="Create Transaction">
     </form>
-
+<!--    Invalid input error alert div-->
+    <div th:if="${param.notValidAmount}">
+      <div id="error" class="alert alert-danger" role="alert">Invalid input. Amount is not a valid numeric input.</div>
+    </div>
   </div>
 
     <div class="col-2">
