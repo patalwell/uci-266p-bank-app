@@ -38,10 +38,10 @@ public class RegistrationController {
 			userService.save(registrationDto);
 			return "redirect:/registration?success";
 		}
-		else if(isUsernameValid.equals(false)){
+		else if(!isUsernameValid){
 			return "redirect:/registration?invalidUsername";
 		}
-		else if(isPasswordValid.equals(false)) {
+		else if(!isPasswordValid) {
 			return "redirect:/registration?invalidPassword";
 		}
 		else {
