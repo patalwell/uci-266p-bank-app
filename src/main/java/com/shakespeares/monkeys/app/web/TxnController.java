@@ -26,7 +26,6 @@ public class TxnController {
   private final TransactionService txnService;
   @Autowired
   UserRepository userRepository;
-  private BigDecimal balance = new BigDecimal("0.00");
 
   public TxnController(TransactionService txnService) {
     this.txnService = txnService;
@@ -37,17 +36,16 @@ public class TxnController {
     List<TransactionInfo> txns = txnService.getTxns();
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     User user = userRepository.findByUsername(auth.getName());
-
-    if (user != null){
-      model.addAttribute("userName", user.getUsername());
-      model.addAttribute("accountId", user.getId());
-
-      model.addAttribute("userBalance", balance);
-      model.addAttribute("txns", txns);
-      model.addAttribute("txnInfo", new TransactionInfo());
-      return "transactions";
+    if (user == null){
+      return "login";
     }
-    return "login";
+    model.addAttribute("userName", user.getUsername());
+    model.addAttribute("accountId", user.getId());
+    model.addAttribute("userBalance", user.getBalance());
+    model.addAttribute("txns", txns);
+    model.addAttribute("txnInfo", new TransactionInfo());
+    return "transactions";
+
   }
 
 
@@ -55,22 +53,32 @@ public class TxnController {
   public String createTxn(Model model,
                            @ModelAttribute TransactionInfo txnInfo) {
 
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    User user = userRepository.findByUsername(auth.getName());
+    if (user == null) {
+      return "login";
+    }
+    BigDecimal currentBalance;
+
     if (validateNumericInput(txnInfo.getAmount())) {
       if (txnInfo.getTxnType() == TxnType.DEPOSIT && txnInfo.getAmount().compareTo(new BigDecimal("0.0")) >= 0) {
-        balance = balance.add(txnInfo.getAmount());
-        txnInfo.setBalance(balance);
+        currentBalance = user.getBalance().add(txnInfo.getAmount());
+        user.setBalance(currentBalance);
+        txnInfo.setBalance(currentBalance);
         txnInfo.setStatus(Status.APPROVED);
-      } else if (txnInfo.getTxnType() == TxnType.WITHDRAW && txnInfo.getAmount().compareTo(balance) <= 0) {
-        balance = balance.subtract(txnInfo.getAmount());
-        txnInfo.setBalance(balance);
+      } else if (txnInfo.getTxnType() == TxnType.WITHDRAW && txnInfo.getAmount().compareTo(user.getBalance()) <= 0) {
+        currentBalance = user.getBalance().subtract(txnInfo.getAmount());
+        user.setBalance(currentBalance);
+        txnInfo.setBalance(currentBalance);
         txnInfo.setStatus(Status.APPROVED);
-      } else if (txnInfo.getTxnType() == TxnType.WITHDRAW && txnInfo.getAmount().compareTo(balance) == 1) {
-        txnInfo.setBalance(balance);
+      } else if (txnInfo.getTxnType() == TxnType.WITHDRAW && txnInfo.getAmount().compareTo(user.getBalance()) == 1) {
+        txnInfo.setBalance(user.getBalance());
         txnInfo.setStatus(Status.DENIED);
       }
       TransactionInfo txn = txnService.createTxn(txnInfo);
       return "redirect:/";
     }
-    else{ return "redirect:/?notValidAmount";}
+    else{
+      return "redirect:/?notValidAmount";}
   }
 }

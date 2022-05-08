@@ -1,6 +1,7 @@
 package com.shakespeares.monkeys.app.model;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Collection;
 
 
@@ -22,6 +23,8 @@ public class User {
 
 	private String password;
 
+	private BigDecimal balance;
+
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
 
@@ -31,12 +34,13 @@ public class User {
 
 	}
 
-	public User(String firstName, String lastName, String username, String password, Collection<Role> roles) {
+	public User(String firstName, String lastName, String username, String password, BigDecimal balance, Collection<Role> roles) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
 		this.password = password;
+		this.balance = balance;
 		this.roles = roles;
 	}
 
@@ -78,6 +82,14 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public BigDecimal getBalance() {
+		return balance;
+	}
+
+	public void setBalance(BigDecimal balance) {
+		this.balance = balance;
 	}
 
 	public Collection<Role> getRoles() {

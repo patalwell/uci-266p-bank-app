@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import static com.shakespeares.monkeys.app.util.Validation.validateCredentials;
+import static com.shakespeares.monkeys.app.util.Validation.validateNumericInput;
 
 @Controller
 @RequestMapping("/registration")
@@ -32,27 +33,31 @@ public class RegistrationController {
 
 	@PostMapping
 	public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto) {
-		Boolean isUsernameValid = false;
-		Boolean isPasswordValid= false;
+		boolean isValidUsername = false;
+		boolean isValidPassword = false;
+		boolean isValidBalance = false;
 		if (registrationDto.getUsername() != null){
-			isUsernameValid= validateCredentials(registrationDto.getUsername());
+			isValidUsername= validateCredentials(registrationDto.getUsername());
 		}
 		if (registrationDto.getPassword() != null) {
-			isPasswordValid = validateCredentials(registrationDto.getPassword());
+			isValidPassword = validateCredentials(registrationDto.getPassword());
 		}
-		if (isUsernameValid && isPasswordValid){
+		if (registrationDto.getBalance() != null){
+			isValidBalance = validateNumericInput(registrationDto.getBalance());
+		}
+		if (isValidUsername && isValidPassword && isValidBalance){
 			userService.save(registrationDto);
 			return "redirect:/registration?success";
 		}
 
-		if(isUsernameValid.equals(false)){
+		if(!isValidUsername){
 			return "redirect:/registration?invalidUsername";
 		}
-		else if(isPasswordValid.equals(false)) {
+		else if(!isValidPassword) {
 			return "redirect:/registration?invalidPassword";
 		}
 		else {
-			return "redirect:/registration?registrationFailed";
+			return "redirect:/registration?invalidBalance";
 		}
 	}
 }
