@@ -33,9 +33,9 @@ public class RegistrationController {
 
 	@PostMapping
 	public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto) {
-		Boolean isValidUsername = false;
-		Boolean isValidPassword = false;
-		Boolean isValidBalance = false;
+		boolean isValidUsername = false;
+		boolean isValidPassword = false;
+		boolean isValidBalance = false;
 		if (registrationDto.getUsername() != null){
 			isValidUsername= validateCredentials(registrationDto.getUsername());
 		}
@@ -50,10 +50,10 @@ public class RegistrationController {
 			return "redirect:/registration?success";
 		}
 
-		if(isValidUsername.equals(false)){
+		if(!isValidUsername){
 			return "redirect:/registration?invalidUsername";
 		}
-		else if(isValidPassword.equals(false)) {
+		else if(!isValidPassword) {
 			return "redirect:/registration?invalidPassword";
 		}
 		else {
