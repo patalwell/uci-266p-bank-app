@@ -6,6 +6,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.util.StringUtils;
+
 import java.io.*;
 
 @Controller
@@ -24,4 +26,17 @@ public class Notices {
                 // .header("Content-Disposition", "attachment; filename=" + licenseName)
                 .body(resource);
     }
+
+    @GetMapping("/redirect")
+    public String redirect(@RequestParam("url") String url) {
+        if (!StringUtils.isEmptyOrWhitespace(url)) {
+
+        }
+        else {
+            url = "/";
+        }
+
+        return "redirect:".concat(url);
+    }
+
 }
