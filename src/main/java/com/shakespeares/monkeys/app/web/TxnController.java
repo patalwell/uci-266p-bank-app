@@ -2,6 +2,7 @@ package com.shakespeares.monkeys.app.web;
 
 
 import java.math.BigDecimal;
+import java.sql.SQLOutput;
 import java.util.List;
 
 import com.shakespeares.monkeys.app.model.Status;
@@ -13,6 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import static com.shakespeares.monkeys.app.util.Validation.validateNumericInput;
 
 @Controller
 public class TxnController {
@@ -41,26 +44,22 @@ public class TxnController {
   public String createTxn(Model model,
                            @ModelAttribute TransactionInfo txnInfo) {
 
-
-    if (txnInfo.getTxnType() == TxnType.DEPOSIT && txnInfo.getAmount().compareTo(new BigDecimal("0.0")) >= 0 ){
-      balance = balance.add(txnInfo.getAmount());
-      txnInfo.setBalance(balance);
-      txnInfo.setStatus(Status.APPROVED);
+    if (validateNumericInput(txnInfo.getAmount())) {
+      if (txnInfo.getTxnType() == TxnType.DEPOSIT && txnInfo.getAmount().compareTo(new BigDecimal("0.0")) >= 0) {
+        balance = balance.add(txnInfo.getAmount());
+        txnInfo.setBalance(balance);
+        txnInfo.setStatus(Status.APPROVED);
+      } else if (txnInfo.getTxnType() == TxnType.WITHDRAW && txnInfo.getAmount().compareTo(balance) <= 0) {
+        balance = balance.subtract(txnInfo.getAmount());
+        txnInfo.setBalance(balance);
+        txnInfo.setStatus(Status.APPROVED);
+      } else if (txnInfo.getTxnType() == TxnType.WITHDRAW && txnInfo.getAmount().compareTo(balance) == 1) {
+        txnInfo.setBalance(balance);
+        txnInfo.setStatus(Status.DENIED);
+      }
+      TransactionInfo txn = txnService.createTxn(txnInfo);
+      return "redirect:/";
     }
-
-    else if (txnInfo.getTxnType() == TxnType.WITHDRAW && txnInfo.getAmount().compareTo(balance) <= 0){
-      balance = balance.subtract(txnInfo.getAmount());
-      txnInfo.setBalance(balance);
-      txnInfo.setStatus(Status.APPROVED);
-    }
-
-    else if (txnInfo.getTxnType() == TxnType.WITHDRAW && txnInfo.getAmount().compareTo(balance) == 1 ){
-      txnInfo.setBalance(balance);
-      txnInfo.setStatus(Status.DENIED);
-    }
-
-
-    TransactionInfo txn = txnService.createTxn(txnInfo);
-    return "redirect:/";
+    else{ return "redirect:/?notValidAmount";}
   }
 }

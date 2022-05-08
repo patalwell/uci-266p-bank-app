@@ -3,8 +3,9 @@ package com.shakespeares.monkeys.app.model;
 import javax.persistence.*;
 import java.util.Collection;
 
+
 @Entity
-@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "username"))
 public class User {
 
 	@Id
@@ -17,7 +18,7 @@ public class User {
 	@Column(name = "last_name")
 	private String lastName;
 
-	private String email;
+	private String username;
 
 	private String password;
 
@@ -30,11 +31,11 @@ public class User {
 
 	}
 
-	public User(String firstName, String lastName, String email, String password, Collection<Role> roles) {
+	public User(String firstName, String lastName, String username, String password, Collection<Role> roles) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.email = email;
+		this.username = username;
 		this.password = password;
 		this.roles = roles;
 	}
@@ -63,12 +64,12 @@ public class User {
 		this.lastName = lastName;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
