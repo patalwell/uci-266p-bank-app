@@ -42,6 +42,9 @@
 				<div th:if="${param.invalidBalance}">
 					<div class="alert alert-danger">Invalid balance. Balance is not valid.</div>
 				</div>
+				<div th:if="${param.usernameExists}">
+					<div class="alert alert-danger">Invalid input. Username is not available.</div>
+				</div>
 
 
 				<h1>Registration</h1>
