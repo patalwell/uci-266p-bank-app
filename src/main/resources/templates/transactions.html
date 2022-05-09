@@ -59,7 +59,8 @@
     </div>
     <div class="col-5 mb-4">
       <h5>Customer Information</h5>
-          <li><b>Username: </b><p style="display: inline" th:utext="${userName}"></p></li>
+          <p style="display: inline; font-size: 22px" th:utext="'Welcome, ' + ${firstName}"></p>
+          <li><b>Username: </b>[[${userName}]]</li>
           <li><b>Account Id:</b> [[${accountId}]]</li>
           <li><b>Current Balance:</b> [[${userBalance}]]</li>
     </div>

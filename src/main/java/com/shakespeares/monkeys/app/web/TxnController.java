@@ -44,7 +44,9 @@ public class TxnController {
     if (user == null){
       return "login";
     }
+
     List<TransactionInfo> txns = txnService.getTxnsByUser(user.getUsername());
+    model.addAttribute("firstName", user.getFirstName());
     model.addAttribute("userName", user.getUsername());
     model.addAttribute("accountId", user.getId());
     model.addAttribute("userBalance", user.getBalance());
