@@ -2,9 +2,10 @@ package com.shakespeares.monkeys.app.web;
 
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
-import com.shakespeares.monkeys.app.dto.UserRegistrationDto;
+import com.shakespeares.monkeys.app.dto.TransactionDto;
 import com.shakespeares.monkeys.app.model.Status;
 import com.shakespeares.monkeys.app.model.TransactionInfo;
 import com.shakespeares.monkeys.app.model.TxnType;
@@ -31,14 +32,19 @@ public class TxnController {
     this.txnService = txnService;
   }
 
+  @ModelAttribute("txn")
+  public TransactionDto transactionDto() {
+    return new TransactionDto();
+  }
+
   @GetMapping(value = "/")
   public String getIndex(Model model) {
-    List<TransactionInfo> txns = txnService.getTxns();
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     User user = userRepository.findByUsername(auth.getName());
     if (user == null){
       return "login";
     }
+    List<TransactionInfo> txns = txnService.getTxnsByUser(user.getUsername());
     model.addAttribute("userName", user.getUsername());
     model.addAttribute("accountId", user.getId());
     model.addAttribute("userBalance", user.getBalance());
@@ -51,13 +57,18 @@ public class TxnController {
 
   @PostMapping(value = "/transactions/")
   public String createTxn(Model model,
-                           @ModelAttribute TransactionInfo txnInfo) {
+                           @ModelAttribute TransactionDto txnInfo) {
 
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     User user = userRepository.findByUsername(auth.getName());
     if (user == null) {
       return "login";
     }
+    //update table with username, so we can find it in the method above
+    txnInfo.setUsername(user.getUsername());
+    txnInfo.setCreatedAt(LocalDateTime.now());
+
+    //local cache for currentBalance
     BigDecimal currentBalance;
 
     if (validateNumericInput(txnInfo.getAmount())) {
@@ -75,7 +86,7 @@ public class TxnController {
         txnInfo.setBalance(user.getBalance());
         txnInfo.setStatus(Status.DENIED);
       }
-      TransactionInfo txn = txnService.createTxn(txnInfo);
+      txnService.save(txnInfo);
       return "redirect:/";
     }
     else{

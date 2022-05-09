@@ -17,9 +17,12 @@ public class Notices {
     public ResponseEntity<Resource> downloadLicense(
             @RequestParam(value = "license", required = true) String licenseName) throws IOException {
 
-        System.out.println("liscenceName");
+        System.out.println("licesnse param: " + licenseName);
 
         Resource resource = new ClassPathResource("licenses" + File.separator + licenseName);
+
+        System.out.println(resource);
+
         return ResponseEntity.ok()
                 .contentLength(resource.getFile().length())
                 // add this header to download file as attachment

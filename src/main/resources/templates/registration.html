@@ -3,10 +3,15 @@
 <head>
 	<meta charset="UTF-8">
 	<title>User Registration - Shakespeare's Bank</title>
-	<link rel="stylesheet"
-		  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+<!--	<link rel="stylesheet"-->
+<!--		  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">-->
+	<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css"
+		  rel="stylesheet">
 </head>
-<body>
+
+</head>
+
+<body class="site">
 
 	<!-- create navigation bar ( header) -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -18,7 +23,7 @@
 
 	<br><br>
 	<!-- Create HTML registration form -->
-	<div class="container">
+	<div class="container" id="content-style">
 		<div class="row">
 			<div class="col-md-4"></div>
 			<div class="col-md-6">
@@ -82,8 +87,8 @@
 			<div class="col-md-4"></div>
 		</div>
 	</div>
-	<div lang="en" th:replace="footer"> </div>
 
+	<div th:replace="footer"> </div>
 </body>
 
 </html>
