@@ -1,6 +1,5 @@
 package com.shakespeares.monkeys.app.web;
 
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,6 +11,8 @@ import com.shakespeares.monkeys.app.model.TxnType;
 import com.shakespeares.monkeys.app.model.User;
 import com.shakespeares.monkeys.app.repository.UserRepository;
 import com.shakespeares.monkeys.app.service.TransactionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +24,8 @@ import static com.shakespeares.monkeys.app.util.Validation.validateNumericInput;
 
 @Controller
 public class TxnController {
+
+  Logger logger = LoggerFactory.getLogger(TxnController.class);
 
   private final TransactionService txnService;
   @Autowired
@@ -42,8 +45,11 @@ public class TxnController {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     User user = userRepository.findByUsername(auth.getName());
     if (user == null){
+      logger.info("stale session, returning to login");
       return "login";
     }
+
+    logger.info(String.format("=============== Loading Index for User: %s ===============", user.getUsername()));
 
     List<TransactionInfo> txns = txnService.getTxnsByUser(user.getUsername());
     model.addAttribute("firstName", user.getFirstName());
@@ -64,8 +70,11 @@ public class TxnController {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     User user = userRepository.findByUsername(auth.getName());
     if (user == null) {
+      logger.info("stale session, returning to login.");
       return "login";
     }
+    logger.info(String.format("=============== Loading Transaction for User: %s ===============", user.getUsername()));
+
     //update table with username, so we can find it in the method above
     txnInfo.setUsername(user.getUsername());
     txnInfo.setCreatedAt(LocalDateTime.now());
@@ -92,6 +101,7 @@ public class TxnController {
       return "redirect:/";
     }
     else{
+      logger.error(String.format("user: %s entered an invalid amount", user.getUsername()));
       return "redirect:/?notValidAmount";}
   }
 }
