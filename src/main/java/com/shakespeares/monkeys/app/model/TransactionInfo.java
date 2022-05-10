@@ -12,7 +12,8 @@ import javax.persistence.*;
 public class TransactionInfo {
 
   @Id
-  private UUID id = UUID.randomUUID();
+  @GeneratedValue
+  private UUID id;
   private String userName;
   private BigDecimal amount;
   private BigDecimal balance;

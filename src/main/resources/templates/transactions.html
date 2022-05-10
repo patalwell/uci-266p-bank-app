@@ -10,19 +10,22 @@
   <title>My Account - Shakespeare's Bank<</title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css"
         rel="stylesheet">
+  <link href="//docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 
-<body class="site">
+<body class="d-flex flex-column min-vh-100">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <span class="navbar-brand mb-0 h1">Shakespeare's Bank</span>
   <div class="navbar-nav">
     <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
   </div>
 </nav>
-<br>
+  <br>
 
-<div class="container" id="content-style">
+  <main class="flex-shrink-0">
+    <div class="container" id="content-style">
 <div class="row">
   <div class="col-5" style="padding-left: 44px;">
     <h5>Bank Operations</h5>
@@ -96,6 +99,7 @@
 </div>
 
 </div>
+  </main>
 
 <div lang="en" th:replace="footer"> </div>
 
