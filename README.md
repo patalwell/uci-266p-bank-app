@@ -10,12 +10,13 @@ sandbox environment for educational purposes.
 
 ### Run Time Instructions
 
-1. Clone this repository: `git clone ...`
-2. Navigate to the parent project directory: `cd uci-266p-bank-app/`
-3. Run `mvn clean install`. This will create a JAR in the target directory in the project directory.
-4. Run the application with `java -jar target/java -jar target/app-0.0.1-SNAPSHOT.jar `
-5. Open a browser and navigate to `http://localhost:8080/`
-6. You should be prompted with a login page.
+1. Make sure you have Java Version 11 and Maven 3.8.4 installed on your server.
+2. Clone this repository: `git clone https://github.com/patalwell/uci-266p-bank-app.git` or download the artifact.
+3. Navigate to the parent project directory: `cd uci-266p-bank-app/`
+4. Run `mvn clean install`. This will create a JAR in the target/ directory of the project.
+5. Run the application with `java -jar target/app-0.0.1-SNAPSHOT.jar `
+6. Open a browser and navigate to `http://localhost:8080/`
+7. You should be prompted with a login page.
 
 ![login-page](docs/img/login_page.png)
 
