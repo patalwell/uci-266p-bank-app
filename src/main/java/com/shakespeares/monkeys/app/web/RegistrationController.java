@@ -39,11 +39,11 @@ public class RegistrationController {
 		boolean isValidUsername = false;
 		boolean isValidPassword = false;
 		boolean isValidBalance = false;
-		boolean existUsername = false;
+		boolean doesUsernameExist = false;
 
 		if (registrationDto.getUsername() != null){
 			isValidUsername= validateCredentials(registrationDto.getUsername());
-			existUsername = userService.existsUsername(registrationDto.getUsername());
+			doesUsernameExist = userService.doesUsernameExist(registrationDto.getUsername());
 		}
 		if (registrationDto.getPassword() != null) {
 			isValidPassword = validateCredentials(registrationDto.getPassword());
@@ -51,7 +51,7 @@ public class RegistrationController {
 		if (registrationDto.getBalance() != null){
 			isValidBalance = validateNumericInput(registrationDto.getBalance());
 		}
-		if (isValidUsername && isValidPassword && isValidBalance && !existUsername){
+		if (isValidUsername && isValidPassword && isValidBalance && !doesUsernameExist){
 			userService.save(registrationDto);
 			return "redirect:/registration?success";
 		}
@@ -62,7 +62,7 @@ public class RegistrationController {
 		else if(!isValidPassword) {
 			return "redirect:/registration?invalidPassword";
 		}
-		else if(existUsername){
+		else if(doesUsernameExist){
 			return "redirect:/registration?usernameExists";
 		}
 		else {
