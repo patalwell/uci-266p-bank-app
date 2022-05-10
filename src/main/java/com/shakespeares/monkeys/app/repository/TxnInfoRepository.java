@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TxnInfoRepository extends JpaRepository<TransactionInfo,
-        Integer> {
+public interface TxnInfoRepository extends JpaRepository<TransactionInfo,Integer> {
     List<TransactionInfo> findByUserName(String username);
 }
