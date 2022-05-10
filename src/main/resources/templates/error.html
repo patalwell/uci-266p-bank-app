@@ -1,28 +1,35 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>User Login - Shakespeare's Bank </title>
-
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <title>Something went wrong</title>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link href="//docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 
-    <!-- create navigation bar ( header) -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <span class="navbar-brand mb-0 h1">Shakespeare's Bank</span>
-    </nav>
-    <div class="container text-center">
+<!-- create navigation bar ( header) -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <span class="navbar-brand mb-0 h1">Shakespeare's Bank</span>
+</nav>
+
+<main class="flex-shrink-0">
+    <div class="container-fluid">
         <br><br>
-        <h4>Something went wrong</h4>
-        <p>Please contact customer service</p>
-        <a href="/">Home</a>
-        <br><br>
+        <div class="text-center">
+            <h4>Something went wrong</h4>
+            <p>Please contact customer service</p>
+            <a href="/">Home</a>
+            <br><br>
+        </div>
     </div>
+</main>
 
-</div>
-<div lang="en" th:replace="footer"> </div>
+<div th:replace="footer"> </div>
+
 </body>
+
+</html>
