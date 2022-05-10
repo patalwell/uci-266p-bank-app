@@ -20,6 +20,6 @@ sandbox environment for educational purposes.
 ![login-page](docs/img/login_page.png)
 
 ### To Do
-- [ ] Introduce 4 Vulnerabilities
-- [ ] Write Report On Secure Code and Vulnerabilities
-- [ ] Create a static release for use https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository
+- [x] Introduce 4 Vulnerabilities
+- [x] Write Report On Secure Code and Vulnerabilities
+- [x] Create a static release for use https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository
