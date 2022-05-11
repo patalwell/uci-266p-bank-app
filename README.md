@@ -4,6 +4,8 @@ This repository contains a sample Java SpringBoot web application that mimics a 
 application. It contains several vulnerabiltiies and is only intended to be used in a
 sandbox environment for educational purposes.
 
+WARNING - DO NOT USE FOR A PRODUCTION SETTING! THIS APP CONTAINS VULNERABILITIES. IT IS USED AS A MEANS TO UNDERSTANDING SECURITY BEST PRACTICES.
+
 ### Requirements
 - Java Version 11
 - Apache Maven 3.8.4
