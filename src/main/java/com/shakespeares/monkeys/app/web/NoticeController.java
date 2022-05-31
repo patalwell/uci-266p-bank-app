@@ -29,12 +29,4 @@ public class NoticeController {
                 .contentLength(resource.getFile().length())
                 .body(resource);
     }
-
-    @GetMapping("/redirect")
-    public String redirect(@RequestParam("url") String url) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        logger.info(String.format("============== Redirect for User %s =============", auth.getName()));
-        return "redirect:".concat(url);
-    }
-
 }
