@@ -24,7 +24,6 @@ public class Validation {
             return false;
         }
     }
-    
     public static Boolean validateUserNameCredentials(@NotNull String credential) {
         if (credential.length()>0 && credential.length()<=127) {
             Pattern pattern = Pattern.compile(credentialsRegex);
