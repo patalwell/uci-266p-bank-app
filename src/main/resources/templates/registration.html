@@ -37,6 +37,10 @@
 				<div th:if="${param.invalidUsername}">
 					<div class="alert alert-danger">Invalid input. Username is not valid.</div>
 				</div>
+				<div th:if="${param.invalidFirstOrLastname}">
+					<div class="alert alert-danger">Invalid First or Last name. Names must be between 1 - 56
+						characters in length and only contain alphabetic letters.</div>
+				</div>
 				<div th:if="${param.invalidPassword}">
 					<div class="alert alert-danger">Invalid input. Password is not valid.</div>
 				</div>
