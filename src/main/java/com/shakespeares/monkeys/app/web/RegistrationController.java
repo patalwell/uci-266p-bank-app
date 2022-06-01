@@ -47,13 +47,14 @@ public class RegistrationController {
 		boolean isValidPassword = false;
 		boolean isValidBalance = false;
 		boolean doesUsernameExist = false;
-		boolean isValidFirstOrLastName = false;
+		boolean isValidFirstName = false;
+		boolean isValidLastName = false;
 
 		if (registrationDto.getFirstName() != null){
-			isValidFirstOrLastName = validateFirstLastName(registrationDto.getFirstName());
+			isValidFirstName = validateFirstLastName(registrationDto.getFirstName());
 		}
 		if (registrationDto.getLastName() != null){
-			isValidFirstOrLastName = validateFirstLastName(registrationDto.getLastName());
+			isValidLastName = validateFirstLastName(registrationDto.getLastName());
 		}
 
 		if (registrationDto.getUsername() != null){
@@ -69,7 +70,8 @@ public class RegistrationController {
 		if (isValidUsername &&
 				isValidPassword &&
 				isValidBalance &&
-				isValidFirstOrLastName &&
+				isValidFirstName &&
+				isValidLastName &&
 				!doesUsernameExist ){
 			userService.save(registrationDto);
 			return "redirect:/registration?success";
@@ -79,9 +81,13 @@ public class RegistrationController {
 			logger.error("user entered invalid user name");
 			return "redirect:/registration?invalidUsername";
 		}
-		else if(!isValidFirstOrLastName){
-			logger.error("user entered invalid first or last name");
-			return "redirect:/registration?invalidFirstOrLastname";
+		else if(!isValidFirstName){
+			logger.error("user entered invalid first name");
+			return "redirect:/registration?invalidFirstName";
+		}
+		else if(!isValidLastName){
+			logger.error("user entered invalid last name");
+			return "redirect:/registration?invalidLastName";
 		}
 		else if(!isValidPassword) {
 			logger.error("user entered invalid password");
