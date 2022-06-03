@@ -43,3 +43,4 @@ mvnw.cmd
 
 HELP.md
 *.log
+*.gz
