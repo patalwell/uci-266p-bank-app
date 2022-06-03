@@ -50,6 +50,7 @@ public class TxnController {
     }
 
     logger.info(String.format("=============== Loading Index for User: %s ===============", user.getUsername()));
+    logger.info("Role: "+ auth.getAuthorities());
 
     List<TransactionInfo> txns = txnService.getTxnsByUser(user.getUsername());
     model.addAttribute("firstName", user.getFirstName());
