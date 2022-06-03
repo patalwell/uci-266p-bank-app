@@ -21,9 +21,27 @@ public class NoticeController {
     public ResponseEntity<Resource> downloadLicense(
             @RequestParam(value = "license", required = true) String licenseName) throws IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        logger.info(String.format("============== Download Licences for User %s =============", auth.getName()));
+        logger.info(String.format("============== Download Licenses for User %s =============", auth.getName()));
 
-        Resource resource = new ClassPathResource("licenses" + File.separator + licenseName);
+        Resource resource = null;
+
+        switch (licenseName) {
+            case "terms":
+                resource = new ClassPathResource("licenses/terms-of-use.txt");
+                break;
+            case "spring":
+                resource = new ClassPathResource("licenses/spring-boot-license.txt");
+                break;
+            case "thymeleaf":
+                resource = new ClassPathResource("licenses/thymeleaf-license.txt");
+                break;
+            case "projectlombok":
+                resource = new ClassPathResource("licenses/projectlombok-license.txt");
+                break;
+            default:
+                throw new FileNotFoundException("File Not Found");
+        }
+
 
         return ResponseEntity.ok()
                 .contentLength(resource.getFile().length())
