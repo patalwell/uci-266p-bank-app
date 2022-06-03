@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
-import static com.shakespeares.monkeys.app.util.Validation.validateCredentials;
+import static com.shakespeares.monkeys.app.util.Validation.validateUserNameCredentials;
 import static com.shakespeares.monkeys.app.util.Validation.validateNumericInput;
+import static com.shakespeares.monkeys.app.util.Validation.validateFirstLastName;
 
 @Controller
 @RequestMapping("/registration")
@@ -46,18 +47,32 @@ public class RegistrationController {
 		boolean isValidPassword = false;
 		boolean isValidBalance = false;
 		boolean doesUsernameExist = false;
+		boolean isValidFirstName = false;
+		boolean isValidLastName = false;
+
+		if (registrationDto.getFirstName() != null){
+			isValidFirstName = validateFirstLastName(registrationDto.getFirstName());
+		}
+		if (registrationDto.getLastName() != null){
+			isValidLastName = validateFirstLastName(registrationDto.getLastName());
+		}
 
 		if (registrationDto.getUsername() != null){
-			isValidUsername= validateCredentials(registrationDto.getUsername());
+			isValidUsername= validateUserNameCredentials(registrationDto.getUsername());
 			doesUsernameExist = userService.doesUsernameExist(registrationDto.getUsername());
 		}
 		if (registrationDto.getPassword() != null) {
-			isValidPassword = validateCredentials(registrationDto.getPassword());
+			isValidPassword = validateUserNameCredentials(registrationDto.getPassword());
 		}
 		if (registrationDto.getBalance() != null){
 			isValidBalance = validateNumericInput(registrationDto.getBalance());
 		}
-		if (isValidUsername && isValidPassword && isValidBalance && !doesUsernameExist){
+		if (isValidUsername &&
+				isValidPassword &&
+				isValidBalance &&
+				isValidFirstName &&
+				isValidLastName &&
+				!doesUsernameExist ){
 			userService.save(registrationDto);
 			return "redirect:/registration?success";
 		}
@@ -65,6 +80,14 @@ public class RegistrationController {
 		if(!isValidUsername){
 			logger.error("user entered invalid user name");
 			return "redirect:/registration?invalidUsername";
+		}
+		else if(!isValidFirstName){
+			logger.error("user entered invalid first name");
+			return "redirect:/registration?invalidFirstName";
+		}
+		else if(!isValidLastName){
+			logger.error("user entered invalid last name");
+			return "redirect:/registration?invalidLastName";
 		}
 		else if(!isValidPassword) {
 			logger.error("user entered invalid password");
